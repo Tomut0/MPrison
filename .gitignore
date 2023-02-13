@@ -1,0 +1,5 @@
+out
+dependency-reduced-pom.xml
+.idea
+.circleci
+*.iml
