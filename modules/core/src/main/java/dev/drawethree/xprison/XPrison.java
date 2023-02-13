@@ -4,6 +4,7 @@ import com.github.lalyos.jfiglet.FigletFont;
 import dev.drawethree.xprison.autominer.XPrisonAutoMiner;
 import dev.drawethree.xprison.autosell.XPrisonAutoSell;
 import dev.drawethree.xprison.config.FileManager;
+import dev.drawethree.xprison.database.RedisDatabase;
 import dev.drawethree.xprison.database.SQLDatabase;
 import dev.drawethree.xprison.database.impl.MySQLDatabase;
 import dev.drawethree.xprison.database.impl.SQLiteDatabase;
@@ -87,6 +88,8 @@ public final class XPrison extends ExtendedJavaPlugin {
 	private JetsPrisonMinesAPI jetsPrisonMinesAPI;
 
 	private NicknameService nicknameService;
+	@Getter
+	private RedisDatabase noSQLDatabase;
 
 
 	@Override
@@ -221,15 +224,17 @@ public final class XPrison extends ExtendedJavaPlugin {
 			String databaseType = this.getConfig().getString("database_type");
 			ConnectionProperties connectionProperties = ConnectionProperties.fromConfig(this.getConfig());
 
+			DatabaseCredentials redisCredentials = DatabaseCredentials.fromConfig("redis.", this.getConfig());
+			noSQLDatabase = new RedisDatabase(redisCredentials);
+			this.getLogger().info(String.format("Using Redis (%s) mechanism.", redisCredentials.getHost()));
+
 			if ("sqlite".equalsIgnoreCase(databaseType)) {
 				this.pluginDatabase = new SQLiteDatabase(this, connectionProperties);
 				this.getLogger().info("Using SQLite (local) database.");
 			} else if ("mysql".equalsIgnoreCase(databaseType)) {
-				DatabaseCredentials credentials = DatabaseCredentials.fromConfig(this.getConfig());
+				DatabaseCredentials credentials = DatabaseCredentials.fromConfig("mysql.", this.getConfig());
 				this.pluginDatabase = new MySQLDatabase(this, credentials, connectionProperties);
 				this.getLogger().info("Using MySQL (remote) database.");
-			} else if("redis".equalsIgnoreCase(databaseType)) {
-
 			} else {
 				this.getLogger().warning(String.format("Error! Unknown database type: %s. Disabling plugin.", databaseType));
 				this.getServer().getPluginManager().disablePlugin(this);
@@ -348,11 +353,11 @@ public final class XPrison extends ExtendedJavaPlugin {
 		}
 
 		if (this.pluginDatabase != null) {
-			if (this.pluginDatabase instanceof SQLDatabase) {
-				SQLDatabase sqlDatabase = (SQLDatabase) this.pluginDatabase;
-				sqlDatabase.close();
-			}
+			SQLDatabase sqlDatabase = this.pluginDatabase;
+			sqlDatabase.close();
 		}
+
+		noSQLDatabase.close();
 	}
 
 

@@ -47,6 +47,7 @@ C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawet
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\utils\block\ExplosionBlockProvider.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\database\impl\MySQLDatabase.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\gems\commands\GemsCommand.java
+C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\database\RedisKeys.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\gangs\commands\impl\GangAcceptSubCommand.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\mainmenu\reload\ReloadSelectionGui.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\utils\economy\EconomyUtils.java
@@ -130,6 +131,7 @@ C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawet
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\autominer\api\events\PlayerAutomineEvent.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\enchants\model\impl\BlessingEnchant.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\enchants\model\impl\ExplosiveEnchant.java
+C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\database\RedisDatabase.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\mines\api\events\MinePostResetEvent.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\mines\commands\impl\MineMigrateCommand.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\utils\text\TextUtils.java
@@ -348,6 +350,7 @@ C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawet
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\history\service\HistoryService.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\enchants\model\impl\AutoSellEnchant.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\mainmenu\help\AutoMinerHelpGui.java
+C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\tokens\repo\impl\RedisTokens.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\autominer\model\AutoMinerRegion.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\tokens\api\events\PlayerTokensLostEvent.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\gangs\enums\GangNameCheckResult.java

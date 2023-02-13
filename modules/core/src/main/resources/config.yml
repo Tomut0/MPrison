@@ -22,6 +22,10 @@ connection_properties:
   connection_test_query: "SELECT 1"
   character_encoding: "utf8"
 # Enabling / Disabling of specific modules
+redis:
+  host: localhost
+  port: 6379
+  password: dbPass
 modules:
   tokens: true
   gems: true

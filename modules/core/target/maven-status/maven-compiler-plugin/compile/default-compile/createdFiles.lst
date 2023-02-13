@@ -73,6 +73,7 @@ dev\drawethree\xprison\enchants\command\EnchantMenuCommand.class
 dev\drawethree\xprison\tokens\commands\TokensRemoveCommand.class
 dev\drawethree\xprison\enchants\listener\EnchantsListener.class
 dev\drawethree\xprison\mines\api\XPrisonMinesAPIImpl.class
+dev\drawethree\xprison\database\RedisDatabase.class
 dev\drawethree\xprison\gangs\utils\GangsConstants.class
 dev\drawethree\xprison\mainmenu\help\MinesHelpGui.class
 dev\drawethree\xprison\utils\Constants.class
@@ -139,6 +140,7 @@ dev\drawethree\xprison\mines\api\events\MineCreateEvent.class
 dev\drawethree\xprison\mines\commands\impl\MineListCommand.class
 dev\drawethree\xprison\gangs\gui\panel\ManageGangMembersGui.class
 dev\drawethree\xprison\enchants\model\impl\JumpBoostEnchant.class
+dev\drawethree\xprison\database\RedisKeys.class
 dev\drawethree\xprison\gangs\commands\GangCommand.class
 dev\drawethree\xprison\prestiges\model\Prestige.class
 dev\drawethree\xprison\enchants\model\impl\NightVisionEnchant.class
@@ -147,6 +149,7 @@ dev\drawethree\xprison\enchants\model\impl\BlessingEnchant.class
 dev\drawethree\xprison\pickaxelevels\XPrisonPickaxeLevels.class
 dev\drawethree\xprison\enchants\model\impl\VoucherFinderEnchant.class
 dev\drawethree\xprison\mines\model\mine\HologramType.class
+dev\drawethree\xprison\tokens\repo\impl\RedisTokens.class
 dev\drawethree\xprison\gems\XPrisonGems.class
 dev\drawethree\xprison\autominer\config\AutoMinerConfig.class
 dev\drawethree\xprison\gems\commands\GemsHelpCommand.class

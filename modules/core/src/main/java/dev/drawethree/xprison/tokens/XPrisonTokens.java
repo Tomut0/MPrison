@@ -12,7 +12,7 @@ import dev.drawethree.xprison.tokens.managers.TokensManager;
 import dev.drawethree.xprison.tokens.repo.BlocksRepository;
 import dev.drawethree.xprison.tokens.repo.TokensRepository;
 import dev.drawethree.xprison.tokens.repo.impl.BlocksRepositoryImpl;
-import dev.drawethree.xprison.tokens.repo.impl.TokensRepositoryImpl;
+import dev.drawethree.xprison.tokens.repo.impl.RedisTokens;
 import dev.drawethree.xprison.tokens.service.BlocksService;
 import dev.drawethree.xprison.tokens.service.TokensService;
 import dev.drawethree.xprison.tokens.service.impl.BlocksServiceImpl;
@@ -91,9 +91,10 @@ public final class XPrisonTokens implements XPrisonModule {
 		this.tokensConfig.load();
 		this.blockRewardsConfig.load();
 
-		this.tokensRepository = new TokensRepositoryImpl(this.core.getPluginDatabase());
-		this.tokensRepository.createTables();
+		//this.tokensRepository = new TokensRepositoryImpl(this.core.getPluginDatabase());
+		//this.tokensRepository.createTables();
 
+		tokensRepository = new RedisTokens(XPrison.getInstance().getNoSQLDatabase());
 		this.tokensService = new TokensServiceImpl(this.tokensRepository);
 
 		this.blocksRepository = new BlocksRepositoryImpl(this.core.getPluginDatabase());
