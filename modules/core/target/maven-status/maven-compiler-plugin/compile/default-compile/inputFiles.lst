@@ -9,6 +9,7 @@ C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawet
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\enchants\managers\EnchantsManager.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\prestiges\service\PrestigeService.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\ranks\listener\RanksListener.java
+C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\ranks\repo\impl\RedisRanks.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\enchants\model\impl\BackpackAutoSellEnchant.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\gangs\commands\impl\GangInfoSubCommand.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\mines\api\events\MineDeleteEvent.java
@@ -291,6 +292,7 @@ C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawet
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\placeholders\XPrisonPAPIPlaceholder.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\tokens\repo\BlocksRepository.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\enchants\model\impl\NukeEnchant.java
+C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\tokens\repo\impl\RedisBlocks.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\enchants\model\XPrisonEnchantment.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\prestiges\manager\PrestigeManager.java
 C:\Users\User\IdeaProjects\X-Prison-master\modules\core\src\main\java\dev\drawethree\xprison\enchants\api\events\NukeTriggerEvent.java

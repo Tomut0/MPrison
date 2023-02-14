@@ -1,13 +1,16 @@
 package dev.drawethree.xprison.tokens.managers;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import dev.drawethree.xprison.XPrison;
 import dev.drawethree.xprison.api.enums.LostCause;
 import dev.drawethree.xprison.api.enums.ReceiveCause;
+import dev.drawethree.xprison.database.RedisKeys;
 import dev.drawethree.xprison.tokens.XPrisonTokens;
 import dev.drawethree.xprison.tokens.api.events.PlayerTokensLostEvent;
 import dev.drawethree.xprison.tokens.api.events.PlayerTokensReceiveEvent;
 import dev.drawethree.xprison.tokens.api.events.XPrisonBlockBreakEvent;
 import dev.drawethree.xprison.tokens.model.BlockReward;
+import dev.drawethree.xprison.tokens.service.BlocksService;
 import dev.drawethree.xprison.utils.item.ItemStackBuilder;
 import dev.drawethree.xprison.utils.misc.NumberUtils;
 import dev.drawethree.xprison.utils.player.PlayerUtils;
@@ -114,11 +117,12 @@ public class TokensManager {
 
 	public void setTokens(OfflinePlayer p, long newAmount, CommandSender executor) {
 		Schedulers.async().run(() -> {
-			if (!p.isOnline()) {
+			plugin.getTokensService().setTokens(p, newAmount);
+/*			if (!p.isOnline()) {
 				this.plugin.getTokensService().setTokens(p, newAmount);
 			} else {
 				tokensCache.put(p.getUniqueId(), newAmount);
-			}
+			}*/
 			PlayerUtils.sendMessage(executor, plugin.getTokensConfig().getMessage("admin_set_tokens").replace("%player%", p.getName()).replace("%tokens%", String.format("%,d", newAmount)));
 		});
 	}
@@ -140,7 +144,8 @@ public class TokensManager {
 			newAmount = currentTokens + finalAmount;
 		}
 
-		if (!p.isOnline()) {
+		plugin.getTokensService().setTokens(p, newAmount);
+		/*if (!p.isOnline()) {
 			this.plugin.getTokensService().setTokens(p, newAmount);
 		} else {
 			tokensCache.put(p.getUniqueId(), newAmount);
@@ -152,7 +157,7 @@ public class TokensManager {
 				PlayerUtils.sendMessage(p.getPlayer(), this.plugin.getTokensConfig().getMessage("lucky_block_mined").replace("%amount%", String.format("%,d", finalAmount)));
 			}
 		}
-
+		*/
 		this.plugin.getCore().debug("XPlayerTokenReceiveEvent :: Player tokens final  :: " + this.tokensCache.getOrDefault(p.getUniqueId(), 0L), this.plugin);
 
 		if (executor != null && !(executor instanceof ConsoleCommandSender)) {
@@ -243,19 +248,21 @@ public class TokensManager {
 	}
 
 	public synchronized long getPlayerTokens(OfflinePlayer p) {
-		if (!p.isOnline()) {
+		return plugin.getTokensService().getTokens(p);
+/*		if (!p.isOnline()) {
 			return this.plugin.getTokensManager().getPlayerTokens(p);
 		} else {
 			return tokensCache.getOrDefault(p.getUniqueId(), (long) 0);
-		}
+		}*/
 	}
 
 	public synchronized long getPlayerBrokenBlocks(OfflinePlayer p) {
-		if (!p.isOnline()) {
+		return this.plugin.getBlocksService().getPlayerBrokenBlocks(p);
+/*		if (!p.isOnline()) {
 			return this.plugin.getBlocksService().getPlayerBrokenBlocks(p);
 		} else {
 			return blocksCache.getOrDefault(p.getUniqueId(), (long) 0);
-		}
+		}*/
 	}
 
 	public synchronized long getPlayerBrokenBlocksWeekly(OfflinePlayer p) {
@@ -275,12 +282,13 @@ public class TokensManager {
 		}
 
 		this.callTokensLostEvent(cause, p, amount);
+		plugin.getTokensService().setTokens(p, finalTokens);
 
-		if (!p.isOnline()) {
+/*		if (!p.isOnline()) {
 			this.plugin.getTokensService().setTokens(p, amount);
 		} else {
 			tokensCache.put(p.getUniqueId(), finalTokens);
-		}
+		}*/
 		if (executor != null) {
 			PlayerUtils.sendMessage(executor, plugin.getTokensConfig().getMessage("admin_remove_tokens").replace("%player%", p.getName()).replace("%tokens%", String.format("%,d", amount)));
 		}
@@ -342,7 +350,12 @@ public class TokensManager {
 
 			BlockReward nextReward = this.getNextBlockReward(player);
 
-			if (!player.isOnline()) {
+			plugin.getBlocksService().setBlocks(player, currentBroken + finalAmount);
+			while (nextReward != null && nextReward.getBlocksRequired() <= getPlayerBrokenBlocks(player)) {
+				nextReward.giveTo((Player) player);
+				nextReward = this.getNextBlockReward(nextReward);
+			}
+/*			if (!player.isOnline()) {
 				this.plugin.getBlocksService().setBlocks(player, currentBroken + finalAmount);
 				this.plugin.getBlocksService().setBlocksWeekly(player, currentBrokenWeekly + finalAmount);
 			} else {
@@ -353,7 +366,7 @@ public class TokensManager {
 					nextReward.giveTo((Player) player);
 					nextReward = this.getNextBlockReward(nextReward);
 				}
-			}
+			}*/
 
 			if (sender != null && !(sender instanceof ConsoleCommandSender)) {
 				PlayerUtils.sendMessage(sender, plugin.getTokensConfig().getMessage("admin_give_blocks").replace("%player%", player.getName()).replace("%blocks%", String.format("%,d", finalAmount)));
@@ -384,7 +397,13 @@ public class TokensManager {
 
 			BlockReward nextReward = this.getNextBlockReward(player);
 
-			if (!player.isOnline()) {
+			plugin.getBlocksService().setBlocks(player, currentBroken + finalAmount);
+			while (nextReward != null && nextReward.getBlocksRequired() <= currentBroken) {
+				nextReward.giveTo((Player) player);
+				nextReward = this.getNextBlockReward(nextReward);
+			}
+
+/*			if (!player.isOnline()) {
 				this.plugin.getBlocksService().setBlocks(player, currentBroken + finalAmount);
 				this.plugin.getBlocksService().setBlocksWeekly(player, currentBrokenWeekly + finalAmount);
 			} else {
@@ -395,7 +414,7 @@ public class TokensManager {
 					nextReward.giveTo((Player) player);
 					nextReward = this.getNextBlockReward(nextReward);
 				}
-			}
+			}*/
 		});
 	}
 
@@ -425,13 +444,16 @@ public class TokensManager {
 			long currentBroken = getPlayerBrokenBlocks(player);
 			long currentBrokenWeekly = getPlayerBrokenBlocksWeekly(player);
 
-			if (!player.isOnline()) {
+			plugin.getBlocksService().setBlocks(player, currentBroken - amount);
+//			plugin.getBlocksService().setBlocksWeekly(player, currentBrokenWeekly - amount);
+
+/*			if (!player.isOnline()) {
 				this.plugin.getBlocksService().setBlocks(player, currentBroken - amount);
 				this.plugin.getBlocksService().setBlocksWeekly(player, currentBrokenWeekly - amount);
 			} else {
 				blocksCache.put(player.getUniqueId(), currentBroken - amount);
 				blocksCacheWeekly.put(player.getUniqueId(), currentBrokenWeekly - amount);
-			}
+			}*/
 
 			PlayerUtils.sendMessage(sender, plugin.getTokensConfig().getMessage("admin_remove_blocks").replace("%player%", player.getName()).replace("%blocks%", String.format("%,d", amount)));
 
@@ -447,8 +469,13 @@ public class TokensManager {
 
 		Schedulers.async().run(() -> {
 			BlockReward nextReward = this.getNextBlockReward(player);
-
-			if (!player.isOnline()) {
+			plugin.getBlocksService().setBlocks(player, amount);
+			//plugin.getBlocksService().setBlocksWeekly(player, amount);
+			while (nextReward != null && nextReward.getBlocksRequired() <= blocksCache.get(player.getUniqueId())) {
+				nextReward.giveTo((Player) player);
+				nextReward = this.getNextBlockReward(nextReward);
+			}
+/*			if (!player.isOnline()) {
 
 				this.plugin.getBlocksService().setBlocks(player, amount);
 				this.plugin.getBlocksService().setBlocksWeekly(player, amount);
@@ -460,7 +487,7 @@ public class TokensManager {
 					nextReward.giveTo((Player) player);
 					nextReward = this.getNextBlockReward(nextReward);
 				}
-			}
+			}*/
 
 			PlayerUtils.sendMessage(sender, plugin.getTokensConfig().getMessage("admin_set_blocks").replace("%player%", player.getName()).replace("%blocks%", String.format("%,d", amount)));
 		});
@@ -593,7 +620,7 @@ public class TokensManager {
 
 	public void disable() {
 		this.saveWeeklyReset();
-		this.savePlayerDataOnDisable();
+		//this.savePlayerDataOnDisable();
 	}
 
 

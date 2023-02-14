@@ -10,13 +10,14 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public final class FortuneEnchant extends XPrisonEnchantment {
 
-    private static List<CompMaterial> blackListedBlocks;
+    private static List<CompMaterial> blackListedBlocks = Collections.emptyList();
 
     public FortuneEnchant(XPrisonEnchants instance) {
         super(instance, 3);

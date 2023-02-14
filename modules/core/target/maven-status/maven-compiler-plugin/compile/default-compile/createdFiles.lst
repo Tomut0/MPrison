@@ -54,6 +54,7 @@ dev\drawethree\xprison\gems\commands\GemsGiveCommand.class
 dev\drawethree\xprison\mines\migration\gui\MinesMigrationGui.class
 dev\drawethree\xprison\gangs\gui\panel\DisbandGangGUI.class
 dev\drawethree\xprison\gangs\commands\GangSubCommand.class
+dev\drawethree\xprison\tokens\repo\impl\RedisBlocks.class
 dev\drawethree\xprison\prestiges\api\XPrisonPrestigesAPIImpl.class
 dev\drawethree\xprison\gangs\commands\impl\admin\GangAdminJoinSubCommand.class
 dev\drawethree\xprison\interfaces\UPCRepository.class
@@ -101,6 +102,7 @@ dev\drawethree\xprison\gangs\api\XPrisonGangsAPIImpl.class
 dev\drawethree\xprison\pickaxelevels\listener\PickaxeLevelsListener.class
 dev\drawethree\xprison\enchants\managers\CooldownManager.class
 dev\drawethree\xprison\autosell\utils\AutoSellContants.class
+dev\drawethree\xprison\ranks\repo\impl\RedisRanks.class
 dev\drawethree\xprison\enchants\utils\EnchantUtils.class
 dev\drawethree\xprison\enchants\api\events\XPrisonPlayerEnchantTriggerEvent.class
 dev\drawethree\xprison\ranks\listener\RanksListener.class

@@ -34,6 +34,10 @@ public class TokensServiceImpl implements TokensService {
 
 	@Override
 	public void createTokens(OfflinePlayer player, long startingTokens) {
+		if (getTokens(player) != 0) {
+			return;
+		}
+
 		repository.addIntoTokens(player, startingTokens);
 	}
 }

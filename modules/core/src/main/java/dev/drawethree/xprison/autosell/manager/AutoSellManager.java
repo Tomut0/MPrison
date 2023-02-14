@@ -6,6 +6,7 @@ import dev.drawethree.xprison.autosell.api.events.XPrisonSellAllEvent;
 import dev.drawethree.xprison.autosell.model.AutoSellItemStack;
 import dev.drawethree.xprison.autosell.model.SellRegion;
 import dev.drawethree.xprison.autosell.utils.AutoSellContants;
+import dev.drawethree.xprison.enchants.XPrisonEnchants;
 import dev.drawethree.xprison.enchants.utils.EnchantUtils;
 import dev.drawethree.xprison.multipliers.enums.MultiplierType;
 import dev.drawethree.xprison.utils.compat.CompMaterial;
@@ -303,7 +304,10 @@ public class AutoSellManager {
     }
 
     private ItemStack createItemStackToGive(Player player, Block block) {
-        int amount = EnchantUtils.getFortuneBlockCount(player.getItemInHand(), block);
+        int amount = 1;
+        if (XPrisonEnchants.getInstance().isEnabled()) {
+            amount = EnchantUtils.getFortuneBlockCount(player.getItemInHand(), block);
+        }
 
         ItemStack toGive;
 
@@ -340,7 +344,7 @@ public class AutoSellManager {
             return false;
         }
 
-        Map<AutoSellItemStack, Double> itemsToSell = sellRegion.previewItemsSell(Arrays.asList(createItemStackToGive(player, block)));
+        Map<AutoSellItemStack, Double> itemsToSell = sellRegion.previewItemsSell(Collections.singletonList(createItemStackToGive(player, block)));
 
         XPrisonAutoSellEvent event = this.callAutoSellEvent(player, sellRegion, itemsToSell);
 

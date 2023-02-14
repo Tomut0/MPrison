@@ -29,7 +29,7 @@ public final class RedisDatabase {
 
     private void connect() {
         JedisPoolConfig config = new JedisPoolConfig();
-        config.setMaxTotal(16);
+        config.setMaxTotal(XPrison.getInstance().getConfig().getInt("redis.maxtotal", 16));
 
         if (credentials.getPassword() != null && !credentials.getPassword().equals("")) {
             jedisPool = new JedisPool(config, credentials.getHost(), credentials.getPort(), 10000, credentials.getPassword());
@@ -44,39 +44,29 @@ public final class RedisDatabase {
         }
     }
 
-    public void clear() {
+    public void clear(RedisKeys key) {
         try (Jedis resource = jedisPool.getResource()) {
-            resource.hdel(SHARDS.getPath());
-            resource.hdel(BLOCKS.getPath());
+            resource.zrem(key.getPath());
         } catch (Exception er) {
             er.printStackTrace();
         }
     }
 
-    public int getByKey(@NotNull RedisKeys key, @NotNull UUID uuid) {
-        int shards = 0;
+    public double getByKey(@NotNull RedisKeys key, @NotNull UUID uuid) {
         try (Jedis resource = jedisPool.getResource()) {
-            return Integer.parseInt(resource.hget(key.getPath(), uuid.toString()));
+            Double zscore = resource.zscore(key.getPath(), uuid.toString());
+            return zscore != null ? zscore : 0;
         } catch (Exception er) {
             er.printStackTrace();
         }
 
-        return shards;
-    }
-
-    public void updateByKey(@NotNull RedisKeys key, @NotNull UUID uuid, double value) {
-        try (Jedis resource = jedisPool.getResource()) {
-            resource.zincrby(key.getPath(), value, uuid.toString());
-            XPrison.getInstance().getLogger().info(String.format("Updated %s - %s", uuid, value));
-        } catch (Exception er) {
-            er.printStackTrace();
-        }
+        return 0;
     }
 
     public void setByKey(@NotNull RedisKeys key, @NotNull UUID uuid, double value) {
         try (Jedis resource = jedisPool.getResource()) {
             resource.zadd(key.getPath(), value, uuid.toString());
-            XPrison.getInstance().getLogger().info(String.format("Set %s - %s", uuid, value));
+            //XPrison.getInstance().getLogger().info(String.format("Set [%s] %s - %s", key.name(), uuid, value));
         } catch (Exception er) {
             er.printStackTrace();
         }
@@ -86,7 +76,7 @@ public final class RedisDatabase {
         Map<UUID, Long> top = new HashMap<>();
 
         try (Jedis resource = jedisPool.getResource()) {
-            List<Tuple> tuples = resource.zrevrangeWithScores(key.getPath(), 10, 0);
+            List<Tuple> tuples = resource.zrevrangeWithScores(key.getPath(), 0, 10);
             for (Tuple tuple : tuples) {
                 top.put(UUID.fromString(tuple.getElement()), ((long) tuple.getScore()));
             }
@@ -97,23 +87,6 @@ public final class RedisDatabase {
         }
 
         return top;
-    }
-
-    public void insertShardsAndBlocks(@NotNull UUID uuid, double shards, int blocks, int tries) {
-        try (Jedis resource = jedisPool.getResource()) {
-            Pipeline pipe = resource.pipelined();
-            pipe.hset(SHARDS.getPath(), uuid.toString(), String.valueOf(shards));
-            pipe.hset(BLOCKS.getPath(), uuid.toString(), String.valueOf(blocks));
-        } catch (Exception e) {
-            if (tries < 3) {
-                e.printStackTrace();
-                String playerName = Bukkit.getOfflinePlayer(uuid).getName();
-                XPrison.getInstance().getLogger().severe("Failed to insert shards/blocks into account " + playerName + " after" + tries + " tries");
-                insertShardsAndBlocks(uuid, shards, blocks, tries - 1);
-            } else {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void close() {

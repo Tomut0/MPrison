@@ -2,6 +2,7 @@ package dev.drawethree.xprison.tokens;
 
 import dev.drawethree.xprison.XPrison;
 import dev.drawethree.xprison.XPrisonModule;
+import dev.drawethree.xprison.database.RedisDatabase;
 import dev.drawethree.xprison.tokens.api.XPrisonTokensAPI;
 import dev.drawethree.xprison.tokens.api.XPrisonTokensAPIImpl;
 import dev.drawethree.xprison.tokens.config.BlockRewardsConfig;
@@ -11,7 +12,7 @@ import dev.drawethree.xprison.tokens.managers.CommandManager;
 import dev.drawethree.xprison.tokens.managers.TokensManager;
 import dev.drawethree.xprison.tokens.repo.BlocksRepository;
 import dev.drawethree.xprison.tokens.repo.TokensRepository;
-import dev.drawethree.xprison.tokens.repo.impl.BlocksRepositoryImpl;
+import dev.drawethree.xprison.tokens.repo.impl.RedisBlocks;
 import dev.drawethree.xprison.tokens.repo.impl.RedisTokens;
 import dev.drawethree.xprison.tokens.service.BlocksService;
 import dev.drawethree.xprison.tokens.service.TokensService;
@@ -94,13 +95,14 @@ public final class XPrisonTokens implements XPrisonModule {
 		//this.tokensRepository = new TokensRepositoryImpl(this.core.getPluginDatabase());
 		//this.tokensRepository.createTables();
 
-		tokensRepository = new RedisTokens(XPrison.getInstance().getNoSQLDatabase());
-		this.tokensService = new TokensServiceImpl(this.tokensRepository);
+		RedisDatabase noSQLDatabase = XPrison.getInstance().getNoSQLDatabase();
+		tokensRepository = new RedisTokens(noSQLDatabase);
+		tokensService = new TokensServiceImpl(tokensRepository);
 
-		this.blocksRepository = new BlocksRepositoryImpl(this.core.getPluginDatabase());
-		this.blocksRepository.createTables();
-
-		this.blocksService = new BlocksServiceImpl(this.blocksRepository);
+		//this.blocksRepository = new BlocksRepositoryImpl(this.core.getPluginDatabase());
+		//this.blocksRepository.createTables();
+		blocksRepository = new RedisBlocks(noSQLDatabase);
+		blocksService = new BlocksServiceImpl(blocksRepository);
 
 		this.tokensManager = new TokensManager(this);
 		this.tokensManager.enable();
@@ -108,8 +110,8 @@ public final class XPrisonTokens implements XPrisonModule {
 		this.commandManager = new CommandManager(this);
 		this.commandManager.enable();
 
-		this.savePlayerDataTask = new SavePlayerDataTask(this);
-		this.savePlayerDataTask.start();
+//		this.savePlayerDataTask = new SavePlayerDataTask(this);
+//		this.savePlayerDataTask.start();
 
 		this.registerListeners();
 
@@ -129,7 +131,7 @@ public final class XPrisonTokens implements XPrisonModule {
 	public void disable() {
 		this.tokensManager.disable();
 
-		this.savePlayerDataTask.stop();
+//		this.savePlayerDataTask.stop();
 
 		this.enabled = false;
 	}

@@ -37,6 +37,10 @@ public class BlocksServiceImpl implements BlocksService {
 
 	@Override
 	public void createBlocks(OfflinePlayer player) {
+		if (getPlayerBrokenBlocks(player) != 0) {
+			return;
+		}
+
 		repository.addIntoBlocks(player);
 	}
 

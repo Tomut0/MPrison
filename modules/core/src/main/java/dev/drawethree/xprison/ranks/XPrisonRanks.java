@@ -59,6 +59,7 @@ public final class XPrisonRanks implements XPrisonModule {
 		this.ranksConfig.load();
 		this.ranksRepository = new RanksRepositoryImpl(this.core.getPluginDatabase());
 		this.ranksRepository.createTables();
+
 		this.ranksService = new RanksServiceImpl(this.ranksRepository);
 		this.ranksManager = new RanksManager(this);
 		this.ranksManager.enable();

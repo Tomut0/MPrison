@@ -19,12 +19,12 @@ public class RedisTokens implements TokensRepository {
 
     @Override
     public long getPlayerTokens(OfflinePlayer player) {
-        return database.getByKey(RedisKeys.SHARDS, player.getUniqueId());
+        return ((long) database.getByKey(RedisKeys.SHARDS, player.getUniqueId()));
     }
 
     @Override
     public void updateTokens(OfflinePlayer player, long newAmount) {
-        database.updateByKey(RedisKeys.SHARDS, player.getUniqueId(), newAmount);
+        database.setByKey(RedisKeys.SHARDS, player.getUniqueId(), newAmount);
     }
 
     @Override
@@ -44,6 +44,6 @@ public class RedisTokens implements TokensRepository {
 
     @Override
     public void clearTableData() {
-        database.clear();
+        database.clear(RedisKeys.SHARDS);
     }
 }

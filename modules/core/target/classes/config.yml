@@ -2,7 +2,7 @@
 debug-mode: false
 # Database type (SQLite, MySQL)
 database_type: SQLite
-# MySQL connection details
+# MySQL's connection details
 mysql:
   host: localhost
   port: 3306
