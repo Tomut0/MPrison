@@ -59,14 +59,14 @@ public class TokensManager {
 
 	private void savePlayerDataLogic(Collection<Player> players, boolean removeFromCache) {
 		for (Player player : players) {
-			this.plugin.getTokensService().setTokens(player, tokensCache.getOrDefault(player.getUniqueId(), 0L));
-			this.plugin.getBlocksService().setBlocks(player, blocksCache.getOrDefault(player.getUniqueId(), 0L));
-			this.plugin.getBlocksService().setBlocksWeekly(player, blocksCacheWeekly.getOrDefault(player.getUniqueId(), 0L));
+//			plugin.getTokensService().setTokens(player, tokensCache.getOrDefault(player.getUniqueId(), 0L));
+//			plugin.getBlocksService().setBlocks(player, blocksCache.getOrDefault(player.getUniqueId(), 0L));
+//			plugin.getBlocksService().setBlocksWeekly(player, blocksCacheWeekly.getOrDefault(player.getUniqueId(), 0L));
 
 			if (removeFromCache) {
-				this.tokensCache.remove(player.getUniqueId());
-				this.blocksCache.remove(player.getUniqueId());
-				this.blocksCacheWeekly.remove(player.getUniqueId());
+				tokensCache.remove(player.getUniqueId());
+				blocksCache.remove(player.getUniqueId());
+				blocksCacheWeekly.remove(player.getUniqueId());
 			}
 
 			this.plugin.getCore().debug(String.format("Saved player %s tokens & blocks broken to database.", player.getName()), this.plugin);
@@ -98,19 +98,19 @@ public class TokensManager {
 		Schedulers.async().run(() -> {
 			for (Player player : players) {
 
-				this.plugin.getTokensService().createTokens(player, this.plugin.getTokensConfig().getStartingTokens());
-				this.plugin.getBlocksService().createBlocks(player);
-				this.plugin.getBlocksService().createBlocksWeekly(player);
+				plugin.getTokensService().createTokens(player, this.plugin.getTokensConfig().getStartingTokens());
+				plugin.getBlocksService().createBlocks(player);
+				plugin.getBlocksService().createBlocksWeekly(player);
 
-				long playerTokens = this.plugin.getTokensService().getTokens(player);
-				long playerBlocks = this.plugin.getBlocksService().getPlayerBrokenBlocks(player);
-				long playerBlocksWeekly = this.plugin.getBlocksService().getPlayerBrokenBlocksWeekly(player);
+				long playerTokens = plugin.getTokensService().getTokens(player);
+				long playerBlocks = plugin.getBlocksService().getPlayerBrokenBlocks(player);
+				long playerBlocksWeekly = plugin.getBlocksService().getPlayerBrokenBlocksWeekly(player);
 
-				this.tokensCache.put(player.getUniqueId(), playerTokens);
-				this.blocksCache.put(player.getUniqueId(), playerBlocks);
-				this.blocksCacheWeekly.put(player.getUniqueId(), playerBlocksWeekly);
+//				this.tokensCache.put(player.getUniqueId(), playerTokens);
+//				this.blocksCache.put(player.getUniqueId(), playerBlocks);
+//				this.blocksCacheWeekly.put(player.getUniqueId(), playerBlocksWeekly);
 
-				this.plugin.getCore().debug(String.format("Loaded tokens and blocks broken of player %s from database", player.getName()), this.plugin);
+				plugin.getCore().debug(String.format("Loaded tokens and blocks broken of player %s from database", player.getName()), this.plugin);
 			}
 		});
 	}
@@ -471,7 +471,7 @@ public class TokensManager {
 			BlockReward nextReward = this.getNextBlockReward(player);
 			plugin.getBlocksService().setBlocks(player, amount);
 			//plugin.getBlocksService().setBlocksWeekly(player, amount);
-			while (nextReward != null && nextReward.getBlocksRequired() <= blocksCache.get(player.getUniqueId())) {
+			while (nextReward != null && nextReward.getBlocksRequired() <= getPlayerBrokenBlocks(player)) {
 				nextReward.giveTo((Player) player);
 				nextReward = this.getNextBlockReward(nextReward);
 			}

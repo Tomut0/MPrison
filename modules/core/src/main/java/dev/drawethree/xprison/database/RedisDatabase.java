@@ -66,7 +66,9 @@ public final class RedisDatabase {
     public void setByKey(@NotNull RedisKeys key, @NotNull UUID uuid, double value) {
         try (Jedis resource = jedisPool.getResource()) {
             resource.zadd(key.getPath(), value, uuid.toString());
-            //XPrison.getInstance().getLogger().info(String.format("Set [%s] %s - %s", key.name(), uuid, value));
+            if (XPrison.getInstance().isDebugMode()) {
+                XPrison.getInstance().getLogger().info(String.format("Set [%s] %s - %s", key.name(), uuid, value));
+            }
         } catch (Exception er) {
             er.printStackTrace();
         }

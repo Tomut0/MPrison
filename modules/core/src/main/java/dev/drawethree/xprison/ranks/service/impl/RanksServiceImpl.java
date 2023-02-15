@@ -24,6 +24,10 @@ public class RanksServiceImpl implements RanksService {
 
 	@Override
 	public void createRank(OfflinePlayer player) {
+		if (getPlayerRank(player) > 1) {
+			return;
+		}
+
 		repository.addIntoRanks(player);
 	}
 }

@@ -24,7 +24,7 @@ public class RedisRanks implements RanksRepository {
 
     @Override
     public void addIntoRanks(OfflinePlayer player) {
-        database.setByKey(RedisKeys.RANKS, player.getUniqueId(), 0);
+        database.setByKey(RedisKeys.RANKS, player.getUniqueId(), 1);
     }
 
     @Override

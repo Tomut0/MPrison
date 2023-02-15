@@ -12,6 +12,7 @@ import dev.drawethree.xprison.ranks.listener.RanksListener;
 import dev.drawethree.xprison.ranks.manager.RanksManager;
 import dev.drawethree.xprison.ranks.repo.RanksRepository;
 import dev.drawethree.xprison.ranks.repo.impl.RanksRepositoryImpl;
+import dev.drawethree.xprison.ranks.repo.impl.RedisRanks;
 import dev.drawethree.xprison.ranks.service.RanksService;
 import dev.drawethree.xprison.ranks.service.impl.RanksServiceImpl;
 import lombok.Getter;
@@ -57,10 +58,9 @@ public final class XPrisonRanks implements XPrisonModule {
 		this.enabled = true;
 		this.ranksConfig = new RanksConfig(this);
 		this.ranksConfig.load();
-		this.ranksRepository = new RanksRepositoryImpl(this.core.getPluginDatabase());
-		this.ranksRepository.createTables();
+		this.ranksRepository = new RedisRanks(XPrison.getInstance().getNoSQLDatabase());
 
-		this.ranksService = new RanksServiceImpl(this.ranksRepository);
+		this.ranksService = new RanksServiceImpl(ranksRepository);
 		this.ranksManager = new RanksManager(this);
 		this.ranksManager.enable();
 		this.api = new XPrisonRanksAPIImpl(this.ranksManager);

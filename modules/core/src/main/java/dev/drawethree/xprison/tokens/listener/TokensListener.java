@@ -67,7 +67,7 @@ public class TokensListener {
 	private void subscribeToPlayerQuitEvent() {
 		Events.subscribe(PlayerQuitEvent.class)
 				.handler(e -> {
-					this.plugin.getTokensManager().savePlayerData(Collections.singletonList(e.getPlayer()), true, true);
+					//this.plugin.getTokensManager().savePlayerData(Collections.singletonList(e.getPlayer()), true, true);
 					e.getPlayer().getActivePotionEffects().forEach(effect -> e.getPlayer().removePotionEffect(effect.getType()));
 				}).bindWith(plugin.getCore());
 	}
@@ -75,10 +75,10 @@ public class TokensListener {
 	private void subscribeToPlayerJoinEvent() {
 		Events.subscribe(PlayerJoinEvent.class)
 				.handler(e -> {
-					this.plugin.getTokensManager().loadPlayerData(Collections.singleton(e.getPlayer()));
+					plugin.getTokensManager().loadPlayerData(Collections.singleton(e.getPlayer()));
 
-					if (this.plugin.getTokensConfig().isDisplayTokenMessages() && this.plugin.getTokensManager().hasOffTokenMessages(e.getPlayer())) {
-						this.plugin.getTokensManager().addPlayerIntoTokenMessageOnPlayers(e.getPlayer());
+					if (plugin.getTokensConfig().isDisplayTokenMessages() && this.plugin.getTokensManager().hasOffTokenMessages(e.getPlayer())) {
+						plugin.getTokensManager().addPlayerIntoTokenMessageOnPlayers(e.getPlayer());
 					}
 
 				}).bindWith(plugin.getCore());

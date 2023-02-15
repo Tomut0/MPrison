@@ -67,7 +67,8 @@ public class RanksManager {
     }
 
     public Rank getPlayerRank(Player p) {
-        int rankId = this.onlinePlayersRanks.getOrDefault(p.getUniqueId(), getDefaultRank().getId());
+        //int rankId = onlinePlayersRanks.getOrDefault(p.getUniqueId(), getDefaultRank().getId());
+        int rankId = plugin.getRanksService().getPlayerRank(p);
         return this.getRankById(rankId).orElse(this.getDefaultRank());
     }
 
@@ -134,7 +135,7 @@ public class RanksManager {
             this.getRankById(i).ifPresent(r -> runCommands(r, p));
         }
 
-        this.onlinePlayersRanks.put(p.getUniqueId(), finalRank.getId());
+        plugin.getRanksService().setRank(p, finalRank.getId());
         PlayerUtils.sendMessage(p, this.plugin.getRanksConfig().getMessage("rank_up").replace("%Rank-1%", currentRank.getPrefix()).replace("%Rank-2%", finalRank.getPrefix()));
         return true;
     }
@@ -184,8 +185,8 @@ public class RanksManager {
 
         runCommands(toBuy, p);
 
-        this.onlinePlayersRanks.put(p.getUniqueId(), toBuy.getId());
-
+//        this.onlinePlayersRanks.put(p.getUniqueId(), toBuy.getId());
+        plugin.getRanksService().setRank(p, toBuy.getId());
         PlayerUtils.sendMessage(p, this.plugin.getRanksConfig().getMessage("rank_up").replace("%Rank-1%", currentRank.getPrefix()).replace("%Rank-2%", toBuy.getPrefix()));
         return true;
     }
@@ -217,17 +218,17 @@ public class RanksManager {
         Events.call(event);
 
         if (event.isCancelled()) {
-            this.plugin.getCore().debug("PlayerRankUpEvent was cancelled.", this.plugin);
+            plugin.getCore().debug("PlayerRankUpEvent was cancelled.", plugin);
             return;
         }
 
         this.runCommands(rank, target);
 
-        this.onlinePlayersRanks.put(target.getUniqueId(), rank.getId());
-
+        //this.onlinePlayersRanks.put(target.getUniqueId(), rank.getId());
+        plugin.getRanksService().setRank(target, rank.getId());
         if (sender != null) {
-            PlayerUtils.sendMessage(sender, this.plugin.getRanksConfig().getMessage("rank_set").replace("%rank%", rank.getPrefix()).replace("%player%", target.getName()));
-            PlayerUtils.sendMessage(target, this.plugin.getRanksConfig().getMessage("rank_up").replace("%Rank-1%", currentRank.getPrefix()).replace("%Rank-2%", rank.getPrefix()));
+            PlayerUtils.sendMessage(sender, plugin.getRanksConfig().getMessage("rank_set").replace("%rank%", rank.getPrefix()).replace("%player%", target.getName()));
+            PlayerUtils.sendMessage(target, plugin.getRanksConfig().getMessage("rank_up").replace("%Rank-1%", currentRank.getPrefix()).replace("%Rank-2%", rank.getPrefix()));
         }
 
     }
@@ -339,7 +340,7 @@ public class RanksManager {
     }
 
     public Optional<Rank> getRankById(int id) {
-        return Optional.ofNullable(this.plugin.getRanksConfig().getRankById(id));
+        return Optional.ofNullable(plugin.getRanksConfig().getRankById(id));
     }
 
     private void executeCommands(Rank rank, Player p) {
@@ -349,7 +350,7 @@ public class RanksManager {
     }
 
     public void disable() {
-        this.saveAllDataSync();
+        // this.saveAllDataSync();
     }
 
     public void enable() {
