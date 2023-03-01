@@ -80,7 +80,7 @@ public class SellRegion {
                 continue;
             }
 
-            double priceForItem = this.getPriceForItem(item);
+            double priceForItem = getPriceForItem(item);
 
             if (priceForItem <= 0.0) {
                 continue;

@@ -7,7 +7,6 @@ import dev.drawethree.xprison.utils.item.ItemStackBuilder;
 import me.lucko.helper.menu.Gui;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-
 public class MinePanelGUI extends Gui {
 
 	private Mine mine;

@@ -23,6 +23,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
@@ -146,7 +147,7 @@ public class AutoSellManager {
 
         Map<AutoSellItemStack, Double> itemsToSell = sellRegion.previewInventorySell(sender);
 
-        XPrisonSellAllEvent event = this.callSellAllEvent(sender, sellRegion, itemsToSell);
+        XPrisonSellAllEvent event = callSellAllEvent(sender, sellRegion, itemsToSell);
 
         if (event.isCancelled()) {
             return;
@@ -154,12 +155,12 @@ public class AutoSellManager {
 
         itemsToSell = event.getItemsToSell();
 
-        double totalAmount = this.sellItems(sender, itemsToSell);
+        double totalAmount = sellItems(sender, itemsToSell);
 
-        itemsToSell.keySet().forEach(item -> sender.getInventory().remove(item.getItemStack()));
+        itemsToSell.keySet().forEach(item -> sender.getInventory().removeItemAnySlot(item.getItemStack()));
 
         if (totalAmount > 0.0) {
-            PlayerUtils.sendMessage(sender, this.plugin.getAutoSellConfig().getMessage("sell_all_complete").replace("%price%", String.format("%,.0f", totalAmount)));
+            PlayerUtils.sendMessage(sender, plugin.getAutoSellConfig().getMessage("sell_all_complete").replace("%price%", String.format("%,.0f", totalAmount)));
         }
     }
 
@@ -304,9 +305,10 @@ public class AutoSellManager {
     }
 
     private ItemStack createItemStackToGive(Player player, Block block) {
-        int amount = 1;
+        ItemStack item = player.getInventory().getItemInMainHand();
+        int amount = item.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS) + 1;
         if (XPrisonEnchants.getInstance().isEnabled()) {
-            amount = EnchantUtils.getFortuneBlockCount(player.getItemInHand(), block);
+            amount = EnchantUtils.getFortuneBlockCount(player.getInventory().getItemInMainHand(), block);
         }
 
         ItemStack toGive;

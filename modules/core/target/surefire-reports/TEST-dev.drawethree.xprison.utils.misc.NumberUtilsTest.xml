@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="4" failures="0" name="dev.drawethree.xprison.utils.misc.NumberUtilsTest" time="0.005" errors="0" skipped="0">
+<testsuite tests="4" failures="0" name="dev.drawethree.xprison.utils.misc.NumberUtilsTest" time="0.012" errors="0" skipped="0">
   <properties>
     <property name="idea.version" value="2022.3.1"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
@@ -29,7 +29,7 @@
     <property name="maven.ext.class.path" value="C:\Users\User\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\223.8214.52\plugins\maven\lib\maven-event-listener.jar"/>
     <property name="classworlds.conf" value="C:\Users\User\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\223.8214.52\plugins\maven\lib\maven3\bin\m2.conf"/>
     <property name="sun.jnu.encoding" value="Cp1251"/>
-    <property name="java.library.path" value="C:\Program Files\BellSoft\LibericaJDK-17-Full\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\BellSoft\LibericaJDK-17-Full;D:\Downloads\gcc-11.3.0-no-debug\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Crucial\Crucial Storage Executive;C:\ProgramData\ComposerSetup\bin;C:\Program Files\PuTTY\;C:\Program Files\WorldPainter;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NetSarang\Xshell 7\;C:\Program Files\dotnet\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\NetSarang\Xftp 7\;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files (x86)\ZeroTier\One\;C:\Program Files\MATLAB\R2022b\bin;C:\Users\User\AppData\Local\Programs\Python\Python311\Scripts\;C:\Users\User\AppData\Local\Programs\Python\Python311\;C:\Users\User\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\User\AppData\Local\Programs\Python\Python310\;C:\php;C:\Users\User\AppData\Roaming\Composer\vendor\bin;C:\apache-ant-1.10.12\bin;C:\sqlite;C:\Users\User\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\User\AppData\Local\JetBrains\Toolbox\scripts;C:\Users\User\AppData\Local\Microsoft\WindowsApps;C:\Users\User\AppData\Roaming\npm;."/>
+    <property name="java.library.path" value="C:\Program Files\BellSoft\LibericaJDK-17-Full\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\BellSoft\LibericaJDK-17-Full;D:\Downloads\gcc-11.3.0-no-debug\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Crucial\Crucial Storage Executive;C:\ProgramData\ComposerSetup\bin;C:\Program Files\PuTTY\;C:\Program Files\WorldPainter;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NetSarang\Xshell 7\;C:\Program Files\dotnet\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\NetSarang\Xftp 7\;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files (x86)\ZeroTier\One\;C:\Program Files\MATLAB\R2022b\bin;C:\Users\User\AppData\Local\Programs\Python\Python311\Scripts\;C:\Users\User\AppData\Local\Programs\Python\Python311\;C:\Users\User\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\User\AppData\Local\Programs\Python\Python310\;C:\php;C:\Users\User\AppData\Roaming\Composer\vendor\bin;C:\apache-ant-1.10.12\bin;C:\sqlite;C:\Users\User\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\User\AppData\Local\JetBrains\Toolbox\scripts;C:\Users\User\AppData\Local\Microsoft\WindowsApps;C:\Users\User\AppData\Roaming\npm;;."/>
     <property name="jansi.passthrough" value="true"/>
     <property name="maven.conf" value="C:\Users\User\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\223.8214.52\plugins\maven\lib\maven3/conf"/>
     <property name="jdk.debug" value="release"/>
@@ -61,8 +61,8 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="dev.drawethree.xprison.utils.misc.NumberUtilsTest" name="test_lower1" time="0.003"/>
+  <testcase classname="dev.drawethree.xprison.utils.misc.NumberUtilsTest" name="test_greater2" time="0.012"/>
+  <testcase classname="dev.drawethree.xprison.utils.misc.NumberUtilsTest" name="test_greater" time="0"/>
+  <testcase classname="dev.drawethree.xprison.utils.misc.NumberUtilsTest" name="test_lower1" time="0"/>
   <testcase classname="dev.drawethree.xprison.utils.misc.NumberUtilsTest" name="test_lower2" time="0"/>
-  <testcase classname="dev.drawethree.xprison.utils.misc.NumberUtilsTest" name="test_greater" time="0.001"/>
-  <testcase classname="dev.drawethree.xprison.utils.misc.NumberUtilsTest" name="test_greater2" time="0.001"/>
 </testsuite>

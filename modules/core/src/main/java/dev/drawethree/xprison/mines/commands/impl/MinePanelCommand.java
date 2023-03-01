@@ -30,7 +30,7 @@ public class MinePanelCommand extends MineCommand {
 		Mine mine = this.plugin.getManager().getMineByName(args.get(0));
 
 		if (mine == null) {
-			PlayerUtils.sendMessage(sender, this.plugin.getMessage("mine_not_exists").replace("%mine%", args.get(0)));
+			PlayerUtils.sendMessage(sender, plugin.getMessage("mine_not_exists").replace("%mine%", args.get(0)));
 			return true;
 		}
 

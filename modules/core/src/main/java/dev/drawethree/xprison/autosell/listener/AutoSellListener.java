@@ -6,10 +6,18 @@ import dev.drawethree.xprison.utils.compat.CompMaterial;
 import dev.drawethree.xprison.utils.player.PlayerUtils;
 import me.lucko.helper.Events;
 import me.lucko.helper.Schedulers;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.world.WorldLoadEvent;
+
+import static net.kyori.adventure.text.Component.text;
+import static net.kyori.adventure.text.format.TextColor.color;
 
 public class AutoSellListener {
 
@@ -20,59 +28,61 @@ public class AutoSellListener {
     }
 
     public void subscribeToEvents() {
-        this.subscribeToPlayerJoinEvent();
-        this.subscribeToBlockBreakEvent();
-        this.subscribeToWorldLoadEvent();
+        subscribeToPlayerJoinEvent();
+        subscribeToBlockBreakEvent();
+        subscribeToWorldLoadEvent();
     }
 
     private void subscribeToWorldLoadEvent() {
         Events.subscribe(WorldLoadEvent.class)
-                .handler(e -> this.plugin.getManager().loadPostponedAutoSellRegions(e.getWorld())).bindWith(this.plugin.getCore());
+                .handler(e -> plugin.getManager().loadPostponedAutoSellRegions(e.getWorld())).bindWith(plugin.getCore());
     }
 
     private void subscribeToPlayerJoinEvent() {
         Events.subscribe(PlayerJoinEvent.class)
-				.handler(e -> Schedulers.sync().runLater(() -> {
+                .handler(e -> Schedulers.sync().runLater(() -> {
 
-					if (this.plugin.getManager().hasAutoSellEnabled(e.getPlayer())) {
-						PlayerUtils.sendMessage(e.getPlayer(), this.plugin.getAutoSellConfig().getMessage("autosell_enable"));
-						return;
-					}
+                    if (plugin.getManager().hasAutoSellEnabled(e.getPlayer())) {
+                        PlayerUtils.sendMessage(e.getPlayer(), plugin.getAutoSellConfig().getMessage("autosell_enable"));
+                        return;
+                    }
 
-					if (this.plugin.getManager().canPlayerEnableAutosellOnJoin(e.getPlayer())) {
-						this.plugin.getManager().toggleAutoSell(e.getPlayer());
-					}
-				}, 20)).bindWith(this.plugin.getCore());
+                    if (plugin.getManager().canPlayerEnableAutosellOnJoin(e.getPlayer())) {
+                        plugin.getManager().toggleAutoSell(e.getPlayer());
+                    }
+                }, 20)).bindWith(plugin.getCore());
     }
 
     private void subscribeToBlockBreakEvent() {
-
         Events.subscribe(BlockBreakEvent.class, EventPriority.HIGHEST)
-                .filter(e -> !e.isCancelled() && e.getPlayer().getItemInHand() != null && this.plugin.getCore().isPickaxeSupported(e.getPlayer().getItemInHand().getType()))
+                .filter(e -> !e.isCancelled() && plugin.getManager().getAutoSellRegion(e.getBlock().getLocation()) != null)
                 .handler(e -> {
+                    Player player = e.getPlayer();
+                    Block block = e.getBlock();
+                    Material itemInMainHand = player.getInventory().getItemInMainHand().getType();
 
-                    SellRegion sellRegion = this.plugin.getManager().getAutoSellRegion(e.getBlock().getLocation());
-
-                    if (sellRegion == null) {
+                    if (block.getType().name().endsWith("LEAVES") && !player.isOp() && itemInMainHand != Material.SHEARS) {
+                        player.sendMessage(text("Возьмите в руки в ножницы!", color(255, 0, 0)));
+                        e.setCancelled(true);
                         return;
                     }
 
                     boolean success = false;
 
-                    if (this.plugin.getManager().hasAutoSellEnabled(e.getPlayer())) {
-                        success = this.plugin.getManager().autoSellBlock(e.getPlayer(), e.getBlock());
+                    if (plugin.getManager().hasAutoSellEnabled(player)) {
+                        success = plugin.getManager().autoSellBlock(player, block);
                     }
 
                     if (!success) {
-                        success = this.plugin.getManager().givePlayerItem(e.getPlayer(), e.getBlock());
+                        success = plugin.getManager().givePlayerItem(player, block);
                     }
 
                     if (success) {
-                        e.getBlock().setType(CompMaterial.AIR.toMaterial());
+                        block.setType(CompMaterial.AIR.toMaterial());
                     } else {
                         e.setCancelled(true);
                     }
-                }).bindWith(this.plugin.getCore());
+                }).bindWith(plugin.getCore());
     }
 }
 

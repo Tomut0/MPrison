@@ -29,7 +29,7 @@ public class SellAllCommand {
                         return;
                     }
 
-                    this.plugin.getManager().sellAll(c.sender(), region);
+                    plugin.getManager().sellAll(c.sender(), region);
 
                 }).registerAndBind(this.plugin.getCore(), COMMAND_NAME);
     }
