@@ -133,17 +133,17 @@ public class AutoSellManager {
 
     public void sellAll(Player sender, IWrappedRegion region) {
 
-        if (!this.validateRegionBeforeSellAll(sender, region)) {
+/*        if (!this.validateRegionBeforeSellAll(sender, region)) {
             return;
-        }
+        }*/
 
-        this.plugin.getCore().debug("User " + sender.getName() + " ran /sellall in region " + region.getId(), this.plugin);
+        plugin.getCore().debug("User " + sender.getName() + " ran /sellall in region " + region.getId(), this.plugin);
 
         SellRegion sellRegion = regionsAutoSell.get(region.getId());
 
-        if (!checkIfPlayerCanSellInSellRegion(sender, sellRegion)) {
+/*        if (!checkIfPlayerCanSellInSellRegion(sender, sellRegion)) {
             return;
-        }
+        }*/
 
         Map<AutoSellItemStack, Double> itemsToSell = sellRegion.previewInventorySell(sender);
 
@@ -202,16 +202,16 @@ public class AutoSellManager {
 
     private boolean checkIfPlayerCanSellInSellRegion(Player sender, SellRegion sellRegion) {
         if (!sellRegion.canPlayerSellInRegion(sender)) {
-            PlayerUtils.sendMessage(sender, this.plugin.getAutoSellConfig().getMessage("no_permission_sell").replace("%perm%", sellRegion.getPermissionRequired()));
+            PlayerUtils.sendMessage(sender, plugin.getAutoSellConfig().getMessage("no_permission_sell").replace("%perm%", sellRegion.getPermissionRequired()));
             return false;
         }
+
         return true;
     }
 
     private boolean validateRegionBeforeSellAll(Player sender, IWrappedRegion region) {
-
         if (region == null) {
-            PlayerUtils.sendMessage(sender, this.plugin.getAutoSellConfig().getMessage("not_in_region"));
+            PlayerUtils.sendMessage(sender, plugin.getAutoSellConfig().getMessage("not_in_region"));
             return false;
         }
 
@@ -259,7 +259,7 @@ public class AutoSellManager {
     }
 
     public SellRegion getAutoSellRegion(Location location) {
-        for (SellRegion region : this.regionsAutoSell.values()) {
+        for (SellRegion region : regionsAutoSell.values()) {
             if (region.contains(location)) {
                 return region;
             }

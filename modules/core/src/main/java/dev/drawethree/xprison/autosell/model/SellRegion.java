@@ -30,8 +30,8 @@ public class SellRegion {
     public SellRegion(IWrappedRegion region, World world) {
         this.region = region;
         this.world = world;
-        this.permissionRequired = null;
-        this.sellPrices = new HashMap<>();
+        permissionRequired = null;
+        sellPrices = new HashMap<>();
     }
 
     public double getSellPriceForMaterial(CompMaterial material) {
@@ -39,31 +39,31 @@ public class SellRegion {
     }
 
     public Set<CompMaterial> getSellingMaterials() {
-        return this.sellPrices.keySet();
+        return sellPrices.keySet();
     }
 
     public Set<CompMaterial> getSellingMaterialsSorted(Comparator<CompMaterial> comparator) {
-        return this.sellPrices.keySet().stream().sorted(comparator).collect(Collectors.toCollection(LinkedHashSet::new));
+        return sellPrices.keySet().stream().sorted(comparator).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     public void addSellPrice(CompMaterial material, double price) {
-        this.sellPrices.put(material, price);
+        sellPrices.put(material, price);
     }
 
     public boolean contains(Location loc) {
-        return Objects.equals(loc.getWorld(), this.world) && this.region.contains(loc);
+        return Objects.equals(loc.getWorld(), world) && region.contains(loc);
     }
 
     public boolean canPlayerSellInRegion(Player player) {
-        if (this.permissionRequired == null || this.permissionRequired.isEmpty()) {
+        if (permissionRequired == null || permissionRequired.isEmpty()) {
             return true;
         }
-        return player.hasPermission(this.permissionRequired);
+        return player.hasPermission(permissionRequired);
     }
 
     public double getPriceForItem(ItemStack item) {
         CompMaterial material = CompMaterial.fromItem(item);
-        return item.getAmount() * this.sellPrices.getOrDefault(material, 0.0);
+        return item.getAmount() * sellPrices.getOrDefault(material, 0.0);
     }
 
     public Map<AutoSellItemStack, Double> previewInventorySell(Player player) {
@@ -93,10 +93,10 @@ public class SellRegion {
     }
 
     public boolean sellsMaterial(CompMaterial material) {
-        return this.sellPrices.containsKey(material);
+        return sellPrices.containsKey(material);
     }
 
     public void removeSellPrice(CompMaterial material) {
-        this.sellPrices.remove(material);
+        sellPrices.remove(material);
     }
 }

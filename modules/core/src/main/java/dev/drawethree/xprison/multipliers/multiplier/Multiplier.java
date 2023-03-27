@@ -16,7 +16,7 @@ public abstract class Multiplier {
 
 	Multiplier(double multiplier, TimeUnit timeUnit, long duration) {
 		this.multiplier = multiplier;
-		this.endTime = System.currentTimeMillis() + timeUnit.toMillis(duration);
+		endTime = System.currentTimeMillis() + timeUnit.toMillis(duration);
 	}
 
 	Multiplier(double multiplier, long endTime) {
@@ -25,12 +25,11 @@ public abstract class Multiplier {
 	}
 
 	public String getTimeLeftString() {
-
-		if (System.currentTimeMillis() > this.endTime) {
+		if (System.currentTimeMillis() > endTime) {
 			return "";
 		}
 
-		long timeLeft = this.endTime - System.currentTimeMillis();
+		long timeLeft = endTime - System.currentTimeMillis();
 
 		long days = timeLeft / (24 * 60 * 60 * 1000);
 		timeLeft -= days * (24 * 60 * 60 * 1000);
@@ -49,26 +48,27 @@ public abstract class Multiplier {
 	}
 
 	public void setMultiplier(double amount) {
-		this.multiplier = amount;
+		multiplier = amount;
 	}
 
 	public void addMultiplier(double amount) {
-		this.multiplier += amount;
+		multiplier += amount;
 	}
 
-	public void addDuration(TimeUnit unit, int duration) {
-		if (this.endTime == 0) {
-			this.endTime = System.currentTimeMillis();
+	public void setDuration(TimeUnit unit, int duration) {
+		if (endTime == 0) {
+			endTime = System.currentTimeMillis();
 		}
-		this.endTime += unit.toMillis(duration);
+
+		endTime = unit.toMillis(duration);
 	}
 
 	public boolean isExpired() {
-		return System.currentTimeMillis() > this.endTime;
+		return System.currentTimeMillis() > endTime;
 	}
 
 	public boolean isValid() {
-		return !this.isExpired() && this.multiplier > 0.0;
+		return !isExpired() && multiplier > 0.0;
 	}
 
 	public void reset() {

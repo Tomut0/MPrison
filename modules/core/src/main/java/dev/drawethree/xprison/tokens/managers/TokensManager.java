@@ -1,16 +1,13 @@
 package dev.drawethree.xprison.tokens.managers;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import dev.drawethree.xprison.XPrison;
 import dev.drawethree.xprison.api.enums.LostCause;
 import dev.drawethree.xprison.api.enums.ReceiveCause;
-import dev.drawethree.xprison.database.RedisKeys;
 import dev.drawethree.xprison.tokens.XPrisonTokens;
 import dev.drawethree.xprison.tokens.api.events.PlayerTokensLostEvent;
 import dev.drawethree.xprison.tokens.api.events.PlayerTokensReceiveEvent;
 import dev.drawethree.xprison.tokens.api.events.XPrisonBlockBreakEvent;
 import dev.drawethree.xprison.tokens.model.BlockReward;
-import dev.drawethree.xprison.tokens.service.BlocksService;
 import dev.drawethree.xprison.utils.item.ItemStackBuilder;
 import dev.drawethree.xprison.utils.misc.NumberUtils;
 import dev.drawethree.xprison.utils.player.PlayerUtils;

@@ -8,6 +8,7 @@ import me.lucko.helper.command.context.CommandContext;
 import org.bukkit.entity.Player;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 import org.codemc.worldguardwrapper.region.IWrappedRegion;
+import org.jetbrains.annotations.NotNull;
 
 public class SellAllCommand {
 
@@ -22,26 +23,27 @@ public class SellAllCommand {
         Commands.create()
                 .assertPlayer()
                 .handler(c -> {
-                    IWrappedRegion region = this.parseRegionFromCommandContext(c);
+                    IWrappedRegion region = parseRegionFromCommandContext(c);
 
                     if (region == null) {
-                        PlayerUtils.sendMessage(c.sender(), this.plugin.getAutoSellConfig().getMessage("invalid_region"));
+                        PlayerUtils.sendMessage(c.sender(), plugin.getAutoSellConfig().getMessage("invalid_region"));
                         return;
                     }
 
                     plugin.getManager().sellAll(c.sender(), region);
-
-                }).registerAndBind(this.plugin.getCore(), COMMAND_NAME);
+                }).registerAndBind(plugin.getCore(), COMMAND_NAME);
     }
 
-    private IWrappedRegion parseRegionFromCommandContext(CommandContext<Player> c) {
+    private IWrappedRegion parseRegionFromCommandContext(@NotNull CommandContext<Player> c) {
         IWrappedRegion region = null;
+
         if (c.args().size() == 0) {
             region = RegionUtils.getRegionWithHighestPriority(c.sender().getLocation());
         } else if (c.args().size() == 1) {
             String regionName = c.rawArg(0);
             region = WorldGuardWrapper.getInstance().getRegion(c.sender().getLocation().getWorld(), regionName).orElse(null);
         }
+
         return region;
     }
 }

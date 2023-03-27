@@ -36,7 +36,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -498,24 +501,10 @@ public final class XPrisonMultipliers implements XPrisonModule {
             return;
         }
 
-        this.callPlayerReceiveMultiplierEvent(onlinePlayer, amount, timeUnit, duration, MultiplierType.SELL);
+        callPlayerReceiveMultiplierEvent(onlinePlayer, amount, timeUnit, duration, MultiplierType.SELL);
 
-        if (sellMultipliers.containsKey(onlinePlayer.getUniqueId())) {
-            PlayerMultiplier multiplier = sellMultipliers.get(onlinePlayer.getUniqueId());
+        sellMultipliers.put(onlinePlayer.getUniqueId(), new PlayerMultiplier(onlinePlayer.getUniqueId(), amount, timeUnit, duration, MultiplierType.SELL));
 
-            if (multiplier.isExpired()) {
-                multiplier.reset();
-            }
-
-            double finalMulti = multiplier.getMultiplier() + amount > this.playerSellMultiMax ? this.playerSellMultiMax : multiplier.getMultiplier() + amount;
-
-            multiplier.setMultiplier(finalMulti);
-            multiplier.addDuration(timeUnit, duration);
-
-            sellMultipliers.put(onlinePlayer.getUniqueId(), multiplier);
-        } else {
-            sellMultipliers.put(onlinePlayer.getUniqueId(), new PlayerMultiplier(onlinePlayer.getUniqueId(), Math.min(amount, this.playerSellMultiMax), timeUnit, duration, MultiplierType.SELL));
-        }
         PlayerUtils.sendMessage(onlinePlayer, messages.get("sell_multi_apply").replace("%multiplier%", String.valueOf(amount)).replace("%time%", duration + " " + StringUtils.capitalize(timeUnit.name())));
         PlayerUtils.sendMessage(sender, String.format("&aYou have set &e%s's &eSell Multiplier &ato &e%.2f &afor &e%d &a%s.", onlinePlayer.getName(), amount, duration, StringUtils.capitalize(timeUnit.name())));
     }
@@ -532,24 +521,9 @@ public final class XPrisonMultipliers implements XPrisonModule {
             return;
         }
 
-        this.callPlayerReceiveMultiplierEvent(onlinePlayer, amount, timeUnit, duration, MultiplierType.TOKENS);
+        callPlayerReceiveMultiplierEvent(onlinePlayer, amount, timeUnit, duration, MultiplierType.TOKENS);
 
-        if (tokenMultipliers.containsKey(onlinePlayer.getUniqueId())) {
-            PlayerMultiplier multiplier = tokenMultipliers.get(onlinePlayer.getUniqueId());
-
-            if (multiplier.isExpired()) {
-                multiplier.reset();
-            }
-
-            double finalMulti = multiplier.getMultiplier() + amount > this.playerTokenMultiMax ? this.playerTokenMultiMax : multiplier.getMultiplier() + amount;
-
-            multiplier.setMultiplier(finalMulti);
-            multiplier.addDuration(timeUnit, duration);
-
-            tokenMultipliers.put(onlinePlayer.getUniqueId(), multiplier);
-        } else {
-            tokenMultipliers.put(onlinePlayer.getUniqueId(), new PlayerMultiplier(onlinePlayer.getUniqueId(), Math.min(amount, this.playerTokenMultiMax), timeUnit, duration, MultiplierType.TOKENS));
-        }
+        tokenMultipliers.put(onlinePlayer.getUniqueId(), new PlayerMultiplier(onlinePlayer.getUniqueId(), amount, timeUnit, duration, MultiplierType.TOKENS));
 
         PlayerUtils.sendMessage(onlinePlayer, messages.get("token_multi_apply").replace("%multiplier%", String.valueOf(amount)).replace("%time%", duration + " " + StringUtils.capitalize(timeUnit.name())));
         PlayerUtils.sendMessage(sender, String.format("&aYou have set &e%s's &eToken Multiplier &ato &e%.2f &afor &e%d &a%s.", onlinePlayer.getName(), amount, duration, StringUtils.capitalize(timeUnit.name())));
@@ -563,14 +537,14 @@ public final class XPrisonMultipliers implements XPrisonModule {
             case "money":
                 finalMulti = globalSellMultiplier.getMultiplier() + amount > globalSellMultiMax ? globalSellMultiMax : this.globalSellMultiplier.getMultiplier() + amount;
                 globalSellMultiplier.setMultiplier(finalMulti);
-                globalSellMultiplier.addDuration(timeUnit, time);
+                globalSellMultiplier.setDuration(timeUnit, time);
                 PlayerUtils.sendMessage(sender, String.format("&aYou have set the &eGlobal Sell Multiplier &ato &e%.2f &afor &e%d &a%s.", amount, time, StringUtils.capitalize(timeUnit.name())));
                 break;
             case "tokens":
             case "token":
                 finalMulti = globalTokenMultiplier.getMultiplier() + amount > globalTokenMultiMax ? globalTokenMultiMax : globalTokenMultiplier.getMultiplier() + amount;
                 globalTokenMultiplier.setMultiplier(finalMulti);
-                globalTokenMultiplier.addDuration(timeUnit, time);
+                globalTokenMultiplier.setDuration(timeUnit, time);
                 PlayerUtils.sendMessage(sender, String.format("&aYou have set the &eGlobal Token Multiplier &ato &e%.2f &afor &e%d &a%s.", amount, time, StringUtils.capitalize(timeUnit.name())));
                 break;
         }

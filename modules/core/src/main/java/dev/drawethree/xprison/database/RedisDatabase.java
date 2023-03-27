@@ -3,18 +3,16 @@ package dev.drawethree.xprison.database;
 import dev.drawethree.xprison.XPrison;
 import dev.drawethree.xprison.database.model.DatabaseCredentials;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
-import redis.clients.jedis.*;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.resps.Tuple;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import static dev.drawethree.xprison.database.RedisKeys.BLOCKS;
-import static dev.drawethree.xprison.database.RedisKeys.SHARDS;
 
 public final class RedisDatabase {
 

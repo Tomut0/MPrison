@@ -11,7 +11,6 @@ import dev.drawethree.xprison.ranks.config.RanksConfig;
 import dev.drawethree.xprison.ranks.listener.RanksListener;
 import dev.drawethree.xprison.ranks.manager.RanksManager;
 import dev.drawethree.xprison.ranks.repo.RanksRepository;
-import dev.drawethree.xprison.ranks.repo.impl.RanksRepositoryImpl;
 import dev.drawethree.xprison.ranks.repo.impl.RedisRanks;
 import dev.drawethree.xprison.ranks.service.RanksService;
 import dev.drawethree.xprison.ranks.service.impl.RanksServiceImpl;

@@ -1,9 +1,12 @@
 package dev.drawethree.xprison.utils.misc;
 
+import dev.drawethree.xprison.autosell.XPrisonAutoSell;
+import dev.drawethree.xprison.autosell.model.SellRegion;
 import org.bukkit.Location;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 import org.codemc.worldguardwrapper.flag.IWrappedFlag;
 import org.codemc.worldguardwrapper.region.IWrappedRegion;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Set;
@@ -11,15 +14,22 @@ import java.util.Set;
 public class RegionUtils {
 
 
-	public static IWrappedRegion getRegionWithHighestPriority(Location loc) {
+	public static IWrappedRegion getRegionWithHighestPriority(@NotNull Location loc) {
 		Set<IWrappedRegion> regions = WorldGuardWrapper.getInstance().getRegions(loc);
-		IWrappedRegion highestPrioRegion = null;
+		SellRegion autoSellRegion = XPrisonAutoSell.getInstance().getManager().getAutoSellRegion(loc);
+
+        if (autoSellRegion != null) {
+            return autoSellRegion.getRegion();
+        }
+
+		IWrappedRegion lowestPriority = null;
 		for (IWrappedRegion region : regions) {
-			if (highestPrioRegion == null || region.getPriority() > highestPrioRegion.getPriority()) {
-				highestPrioRegion = region;
+			if (lowestPriority == null || region.getPriority() <= lowestPriority.getPriority()) {
+				lowestPriority = region;
 			}
 		}
-		return highestPrioRegion;
+
+		return lowestPriority;
 	}
 
 	public static IWrappedRegion getRegionWithHighestPriorityAndFlag(Location loc, String flagName, Object flagValue) {

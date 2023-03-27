@@ -58,7 +58,7 @@ public class SellPriceCommand {
                         return;
                     }
 
-                    SellRegion sellRegion = this.getSellRegionFromWrappedRegion(wrappedRegion);
+                    SellRegion sellRegion = getSellRegionFromWrappedRegion(wrappedRegion);
 
                     if (sellRegion == null) {
                         sellRegion = new SellRegion(wrappedRegion, c.sender().getWorld());
@@ -66,8 +66,8 @@ public class SellPriceCommand {
 
                     sellRegion.addSellPrice(type, price);
 
-                    this.plugin.getManager().updateSellRegion(sellRegion);
-                    this.plugin.getAutoSellConfig().saveSellRegion(sellRegion);
+                    plugin.getManager().updateSellRegion(sellRegion);
+                    plugin.getAutoSellConfig().saveSellRegion(sellRegion);
 
                     PlayerUtils.sendMessage(c.sender(), String.format("&aSuccessfuly set sell price of &e%s &ato &e$%.2f &ain region &e%s", type.name(), price, wrappedRegion.getId()));
 
