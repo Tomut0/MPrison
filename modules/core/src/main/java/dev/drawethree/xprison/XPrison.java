@@ -43,7 +43,6 @@ import me.lucko.helper.Events;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
@@ -56,6 +55,8 @@ import org.codemc.worldguardwrapper.flag.WrappedState;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.bukkit.Bukkit.getPluginManager;
 
 @Getter
 public final class XPrison extends ExtendedJavaPlugin {
@@ -161,9 +162,9 @@ public final class XPrison extends ExtendedJavaPlugin {
 
     private void initVariables() {
         supportedPickaxes = getConfig().getStringList("supported-pickaxes").stream().
-				map(CompMaterial::fromString).
-				map(CompMaterial::getMaterial).
-				collect(Collectors.toList());
+                map(CompMaterial::fromString).
+                map(CompMaterial::getMaterial).
+                collect(Collectors.toList());
 
         for (Material m : supportedPickaxes) {
             getLogger().info("Added support for pickaxe: " + m);
@@ -317,7 +318,7 @@ public final class XPrison extends ExtendedJavaPlugin {
         if (module != null) {
             getLogger().info(String.format("[%s] %s", module.getName(), TextUtils.applyColor(msg)));
         } else {
-           	getLogger().info(TextUtils.applyColor(msg));
+            getLogger().info(TextUtils.applyColor(msg));
         }
     }
 
@@ -348,16 +349,11 @@ public final class XPrison extends ExtendedJavaPlugin {
     @Override
     protected void disable() {
 
-        Iterator<XPrisonModule> it = this.modules.values().iterator();
+        Iterator<XPrisonModule> it = modules.values().iterator();
 
         while (it.hasNext()) {
-            this.unloadModule(it.next());
+            unloadModule(it.next());
             it.remove();
-        }
-
-        if (this.pluginDatabase != null) {
-            SQLDatabase sqlDatabase = this.pluginDatabase;
-            sqlDatabase.close();
         }
 
         noSQLDatabase.close();
@@ -381,13 +377,12 @@ public final class XPrison extends ExtendedJavaPlugin {
     }
 
     private void registerJetsPrisonMines() {
-        if (Bukkit.getPluginManager().getPlugin("JetsPrisonMines") != null) {
+        if (getPluginManager().getPlugin("JetsPrisonMines") != null) {
             this.jetsPrisonMinesAPI = ((JetsPrisonMines) getServer().getPluginManager().getPlugin("JetsPrisonMines")).getAPI();
         }
     }
 
     private boolean setupEconomy() {
-
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
         }
@@ -399,11 +394,11 @@ public final class XPrison extends ExtendedJavaPlugin {
         }
 
         economy = rsp.getProvider();
-        return economy != null;
+        return true;
     }
 
     public boolean isPickaxeSupported(Material m) {
-        return this.supportedPickaxes.contains(m);
+        return supportedPickaxes.contains(m);
     }
 
     public boolean isPickaxeSupported(ItemStack item) {
@@ -413,18 +408,19 @@ public final class XPrison extends ExtendedJavaPlugin {
     private boolean loadNMSProvider() {
         NMSProviderFactory factory = new NMSProviderFactoryImpl();
         try {
-            this.nmsProvider = factory.createNMSProvider();
-            this.getLogger().info("NMSProvider loaded:  " + nmsProvider.getClass().getSimpleName());
+            nmsProvider = factory.createNMSProvider();
+            getLogger().info("NMSProvider loaded:  " + nmsProvider.getClass().getSimpleName());
         } catch (ClassNotFoundException e) {
-            this.getLogger().warning("NMSProvider could not find a valid implementation for this server version.");
-        } catch (InstantiationException | IllegalAccessException | ClassCastException e) {
-            e.printStackTrace();
+            getLogger().warning("NMSProvider could not find a valid implementation for this server version.");
+        } catch (InstantiationException | IllegalAccessException | ClassCastException ex) {
+            ex.printStackTrace();
         }
-        return this.nmsProvider != null;
+
+        return nmsProvider != null;
     }
 
     public Collection<XPrisonModule> getModules() {
-        return this.modules.values();
+        return modules.values();
     }
 
     public boolean isDebugMode() {
@@ -432,26 +428,26 @@ public final class XPrison extends ExtendedJavaPlugin {
     }
 
     public void setDebugMode(boolean enabled) {
-        this.debugMode = enabled;
-        this.getConfig().set("debug-mode", debugMode);
-        this.saveConfig();
+        debugMode = enabled;
+        getConfig().set("debug-mode", debugMode);
+        saveConfig();
     }
 
     public boolean isUltraBackpacksEnabled() {
-        return this.getServer().getPluginManager().isPluginEnabled("UltraBackpacks");
+        return getServer().getPluginManager().isPluginEnabled("UltraBackpacks");
     }
 
     public boolean isPlaceholderAPIEnabled() {
-        return this.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
+        return getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
     }
 
     public boolean isMVdWPlaceholderAPIEnabled() {
-        return this.getServer().getPluginManager().isPluginEnabled("MVdWPlaceholderAPI");
+        return getServer().getPluginManager().isPluginEnabled("MVdWPlaceholderAPI");
     }
 
     private void registerWGFlag() {
 
-        if (Bukkit.getPluginManager().getPlugin("WorldGuard") == null) {
+        if (getPluginManager().getPlugin("WorldGuard") == null) {
             return;
         }
 

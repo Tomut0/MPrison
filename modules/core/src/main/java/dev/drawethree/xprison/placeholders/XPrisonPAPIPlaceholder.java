@@ -13,6 +13,7 @@ import dev.drawethree.xprison.utils.misc.MathUtils;
 import dev.drawethree.xprison.utils.misc.TimeUtil;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -65,7 +66,7 @@ public final class XPrisonPAPIPlaceholder extends PlaceholderExpansion {
 	 * @return The name of the author as a String.
 	 */
 	@Override
-	public String getAuthor() {
+	public @NotNull String getAuthor() {
 		return plugin.getDescription().getAuthors().toString();
 	}
 
@@ -79,7 +80,7 @@ public final class XPrisonPAPIPlaceholder extends PlaceholderExpansion {
 	 * @return The identifier in {@code %<identifier>_<value>%} as String.
 	 */
 	@Override
-	public String getIdentifier() {
+	public @NotNull String getIdentifier() {
 		return "xprison";
 	}
 
@@ -92,7 +93,7 @@ public final class XPrisonPAPIPlaceholder extends PlaceholderExpansion {
 	 * @return The version as a String.
 	 */
 	@Override
-	public String getVersion() {
+	public @NotNull String getVersion() {
 		return plugin.getDescription().getVersion();
 	}
 
@@ -107,9 +108,13 @@ public final class XPrisonPAPIPlaceholder extends PlaceholderExpansion {
 	 * @return possibly-null String of the requested identifier.
 	 */
 	@Override
-	public String onPlaceholderRequest(Player player, String identifier) {
+	public String onPlaceholderRequest(Player player, @NotNull String identifier) {
 
 		if (player == null) {
+			return null;
+		}
+
+		if (XPrison.getInstance().getNoSQLDatabase().getJedisPool().isClosed()) {
 			return null;
 		}
 

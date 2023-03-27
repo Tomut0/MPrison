@@ -18,19 +18,19 @@ public abstract class PooledSQLDatabase extends SQLDatabase {
 
 	@Override
 	public void close() {
-		if (this.hikari != null) {
-			this.hikari.close();
-			this.plugin.getLogger().info("Database Connection closed");
+		if (hikari != null) {
+			hikari.close();
+			plugin.getLogger().info("Database Connection closed");
 		}
 	}
 
 	@Override
 	public Connection getConnection() {
 		try {
-			return this.hikari.getConnection();
-		} catch (SQLException e) {
-			this.plugin.getLogger().warning("Unable to get database connection!");
-			e.printStackTrace();
+			return hikari.getConnection();
+		} catch (SQLException ex) {
+			plugin.getLogger().warning("Unable to get database connection!");
+			ex.printStackTrace();
 		}
 		return null;
 	}
