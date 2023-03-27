@@ -8,7 +8,7 @@ softdepend:
   - MVdWPlaceholderAPI
   - Multiverse-Core
   - UltraBackpacks
-authors: [ Drawethree ]
+authors: [ Tomut0, Drawethree ]
 api-version: 1.13
 load: POSTWORLD
-website: www.drawethree.dev
+website: https://github.com/Tomut0
